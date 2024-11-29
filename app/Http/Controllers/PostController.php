@@ -19,15 +19,20 @@ class PostController extends Controller
 
     public function store (Request $request) {
 
-        if ($request->hasFile('image')) {
-            $imageName = $request->file('image')->getClientOriginalName() . "-" . time() . $request->file('image')->getClientOriginalExtension() ;
-            $request->file('image')->move(public_path("/images/posts") , $imageName);
+        $images = [];
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $img) {
+                $imageName = $img->getClientOriginalName() . "-" . time() . $img->getClientOriginalExtension() ;
+                $img->move(public_path("/images/posts") , $imageName);
+                array_push($images , $imageName);
+            }
         }
 
         Post::create([
             "title" => $request->title,
             "description" => $request->description,
-            "image" => $imageName
+            "image" => json_encode($images)
         ]);
 
         return redirect()->route("posts.index");
@@ -45,15 +50,21 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post)
     {
-        if ($request->hasFile('image')) {
-            $imageName = $request->file('image')->getClientOriginalName() . "-" . time() . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move(public_path("/images/posts"), $imageName);
+        
+
+        if ($request->hasFile('images')) {
+            $images = [];
+            foreach ($request->file('images') as $img) {
+                $imageName = $img->getClientOriginalName() . "-" . time() . $img->getClientOriginalExtension() ;
+                $img->move(public_path("/images/posts") , $imageName);
+                array_push($images , $imageName);
+            }
         }
 
         $post->update([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
-            'image' => $imageName ?? $post->image
+            'image' => $images ?? $post->image
         ]);
 
         return redirect()->route("posts.index");

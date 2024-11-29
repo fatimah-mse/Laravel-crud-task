@@ -9,7 +9,9 @@
         @forelse ($posts as $post)
             <div class="col-md-6 col-lg-4">
                 <div class="card py-3 px-4 rounded shadow">
-                    <img class="img-fluid mb-3 w-75 d-block m-auto" src="/images/posts/{{ $post->image }}" alt="img" />
+                    @foreach($post->image as $img)
+                        <img class="img-fluid mb-3 w-75 d-block m-auto" src="/images/posts/{{ $img }}" alt="img" />
+                    @endforeach
                     <a class="mb-3 btn btn-primary text-capitalize" href="{{ route('posts.show', $post) }}">show more detailes</a>
                 </div>
             </div>

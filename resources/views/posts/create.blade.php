@@ -8,7 +8,7 @@
         @csrf
         <input class="px-3 py-2 rounded" type="text" name="title" placeholder="Title">
         <textarea class="px-3 py-2 rounded" name="description" rows="6" placeholder="description"></textarea>
-        <input class="px-3 py-2 rounded border" type="file" name="image">
+        <input class="px-3 py-2 rounded border" type="file" name="images[]" multiple>
         <input class="px-3 py-2 btn btn-success" type="submit" value="Add New Post">
     </form>
     <a href="{{ route('posts.index') }}" class="btn btn-secondary mt-5">Return</a>
